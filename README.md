@@ -25,5 +25,3 @@ python app.py
 ```
 
 Open your browser to `http://localhost:5000`
-
-Navigate to `/insights` to view the dashboard with charts.
