@@ -1,0 +1,16 @@
+[33m945aa1d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge pull request #3 from varshinivkbsc24-dot/Extra-Features
+[33m77648ee[m[33m ([m[1;31morigin/Extra-Features[m[33m)[m Update insights.css
+[33m590a2a3[m Fix HTML encoding issues in insights.html
+[33meece27e[m Remove empty line in insights.js
+[33m7043237[m Add files via upload
+[33m047a55d[m Delete views directory
+[33maa133f4[m Delete assets directory
+[33mc42b627[m Delete assets/insights-pretty.css
+[33mf734bd1[m Merge pull request #2 from varshinivkbsc24-dot/Extra-Features
+[33mefc0992[m[33m ([m[1;32mExtra-Features[m[33m)[m Add views and assets for Extra-Features
+[33m7be2669[m Merge pull request #1 from varshinivkbsc24-dot/backend
+[33mfcf1a0e[m[33m ([m[1;31morigin/backend[m[33m)[m Create requirements.txt
+[33m9bfd1ff[m Create README.md
+[33m700abad[m Update app.py
+[33m2fbf1f6[m Integrate Chart.js for expense visualization
+[33m52a01e0[m Initial commit - basic expense tracker
