@@ -1,5 +1,4 @@
 console.log("Insights dashboard loaded");
-
 const cards = document.querySelectorAll(".card");
 
 cards.forEach(card => {
