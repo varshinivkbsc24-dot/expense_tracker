@@ -191,6 +191,9 @@ def index():
 
 @app.route("/insights")
 def insights():
+    
+    categories = ["Food", "Travel", "Shopping"]
+    amounts = [500, 300, 200]
 
     try:
         with open(FILE_NAME, 'r') as f:
@@ -225,14 +228,14 @@ def insights():
     amounts = list(category_totals.values())
 
     return render_template(
-        "insights.html",
-        total=total,
-        count=len(expenses),
-        highest=highest_category,
-        message=message,
-        categories=categories,
-        amounts=amounts
-    )
+    "insights.html",
+    categories=categories,
+    amounts=amounts,
+    total=total,
+    count=count,
+    highest=highest,
+    message=message
+   )
 
 @app.route("/delete/<id>")
 def delete(id):
