@@ -2,97 +2,204 @@
 <html>
 <head>
     <title>Expense Tracker</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            background: #0f172a;
+            background: linear-gradient(135deg, #0f172a, #1e1b4b);
             color: white;
-            font-family: Arial;
-            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
         }
 
         h1 {
-            margin-top: 20px;
+            font-size: 42px;
+            margin-bottom: 25px;
+            font-weight: 600;
         }
 
         form {
-            margin: 20px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
         }
 
         input {
-            padding: 10px;
-            margin: 5px;
-            width: 200px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            outline: none;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        input::placeholder {
+            color: #d1d5db;
+        }
+
+        input:focus {
+            background: rgba(255,255,255,0.22);
+            transform: scale(1.02);
         }
 
         button {
-            padding: 10px 20px;
-            background: purple;
-            color: white;
+            padding: 14px;
             border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #9333ea, #ec4899);
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(236,72,153,0.4);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .expense-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
         }
 
         .expense {
-            background: #1e293b;
-            margin: 10px auto;
-            padding: 10px;
-            width: 300px;
-            border-radius: 8px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            width: 280px;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            transition: 0.3s ease;
+        }
+
+        .expense:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .expense b {
+            font-size: 20px;
+        }
+
+        .expense p {
+            margin-top: 8px;
+            color: #d1d5db;
         }
 
         a {
-            color: red;
+            display: inline-block;
+            margin-top: 15px;
+            color: #ff6b6b;
             text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: #ff3b3b;
+            transform: scale(1.05);
+        }
+
+        canvas {
+            margin-top: 40px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
         }
     </style>
 </head>
+
 <body>
 
-<h1>💸 Expense Tracker</h1>
+    <h1>Expense Tracker</h1>
 
-<form action="/add" method="POST">
-    <input name="category" placeholder="Category" required>
-    <input name="amount" placeholder="Amount" required>
-    <input name="date" type="date" required>
-    <input name="note" placeholder="Note">
-    <br>
-    <button type="submit">Add Expense</button>
-</form>
+    <form action="/add" method="POST">
+        <input name="category" placeholder="Category" required>
+        <input name="amount" placeholder="Amount" required>
+        <input name="date" type="date" required>
+        <input name="note" placeholder="Note">
+        <button type="submit">Add Expense</button>
+    </form>
 
-<h2>Total: ₹{{ total }}</h2>
+    <h2>Total: ₹{{ total }}</h2>
 
-{% for exp in expenses %}
-<div class="expense">
-    <b>{{ exp.Category }}</b> - ₹{{ exp.Amount }} <br>
-    {{ exp.Date }} <br>
-    {{ exp.Note }}
-    <br><br>
-    <a href="/delete/{{ exp.ID }}">❌ Delete</a>
-</div>
-{% endfor %}
+    <div class="expense-container">
+        {% for exp in expenses %}
+        <div class="expense">
+            <b>{{ exp.Category }}</b>
+
+            <p>₹{{ exp.Amount }}</p>
+            <p>{{ exp.Date }}</p>
+            <p>{{ exp.Note }}</p>
+
+            <a href="/delete/{{ exp.ID }}">Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <canvas id="myChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        let categories = {};
+
+        {% for exp in expenses %}
+            categories["{{ exp.Category }}"] =
+            (categories["{{ exp.Category }}"] || 0) + {{ exp.Amount }};
+        {% endfor %}
+
+        let labels = Object.keys(categories);
+        let data = Object.values(categories);
+
+        new Chart(document.getElementById("myChart"), {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
 
 </body>
 </html>
-<canvas id="myChart"></canvas>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-let categories = {};
-{% for exp in expenses %}
-    categories["{{ exp.Category }}"] = 
-    (categories["{{ exp.Category }}"] || 0) + {{ exp.Amount }};
-{% endfor %}
-
-let labels = Object.keys(categories);
-let data = Object.values(categories);
-
-new Chart(document.getElementById("myChart"), {
-    type: 'pie',
-    data: {
-        labels: labels,
-        datasets: [{
-            data: data
-        }]
-    }
-});
-</script>
