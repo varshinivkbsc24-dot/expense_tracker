@@ -1,127 +1,151 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
 
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
         }
 
-        body {
-            background: linear-gradient(135deg, #0f172a, #1e1b4b);
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
+        body{
+            background:linear-gradient(135deg,#0f172a,#1e1b4b);
+            color:white;
+            min-height:100vh;
+            padding:40px 20px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
         }
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 25px;
-            font-weight: 600;
+        h1{
+            font-size:48px;
+            margin-bottom:30px;
         }
 
-        form {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
+        form{
+            width:100%;
+            max-width:550px;
+            background:rgba(255,255,255,0.08);
+            padding:25px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+            display:flex;
+            flex-direction:column;
+            gap:15px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.3);
         }
 
-        input {
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            outline: none;
-            background: rgba(255,255,255,0.15);
-            color: white;
-            font-size: 15px;
-            transition: 0.3s;
+        input{
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:rgba(255,255,255,0.15);
+            color:white;
+            font-size:15px;
+            outline:none;
         }
 
-        input::placeholder {
-            color: #d1d5db;
+        input::placeholder{
+            color:#d1d5db;
         }
 
-        input:focus {
-            background: rgba(255,255,255,0.22);
-            transform: scale(1.02);
+        button{
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            background:linear-gradient(135deg,#9333ea,#ec4899);
+            color:white;
+            font-size:16px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.3s;
         }
 
-        button {
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            color: white;
-            background: linear-gradient(135deg, #9333ea, #ec4899);
-            transition: 0.3s ease;
+        button:hover{
+            transform:translateY(-3px);
         }
 
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(236,72,153,0.4);
+        .top-links{
+            margin-top:20px;
+            display:flex;
+            gap:15px;
         }
 
-        h2 {
-            margin-bottom: 15px;
-            font-weight: 500;
+        .top-links a{
+            text-decoration:none;
+            color:white;
+            padding:12px 20px;
+            border-radius:12px;
+            background:rgba(255,255,255,0.12);
+            transition:0.3s;
         }
 
-        #search {
-            margin-bottom: 20px;
-            max-width: 400px;
+        .top-links a:hover{
+            background:rgba(255,255,255,0.2);
         }
 
-        .expense-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
+        h2{
+            margin-top:30px;
+            margin-bottom:20px;
         }
 
-        .expense {
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            width: 280px;
-            border-radius: 18px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-            transition: 0.3s ease;
+        #search{
+            width:300px;
+            margin-bottom:25px;
         }
 
-        .expense:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        .expense-container{
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:20px;
+            width:100%;
+            max-width:1200px;
         }
 
-        canvas {
-            margin-top: 40px;
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 100%;
+        .expense{
+            width:280px;
+            background:rgba(255,255,255,0.08);
+            padding:20px;
+            border-radius:18px;
+            backdrop-filter:blur(10px);
+            transition:0.3s;
+            box-shadow:0 6px 18px rgba(0,0,0,0.3);
+        }
+
+        .expense:hover{
+            transform:translateY(-5px);
+        }
+
+        .expense p{
+            margin-top:8px;
+            color:#d1d5db;
+        }
+
+        .expense a{
+            display:inline-block;
+            margin-top:12px;
+            color:#ff6b6b;
+            text-decoration:none;
+        }
+
+        canvas{
+            margin-top:40px;
+            background:white;
+            border-radius:20px;
+            padding:20px;
+            max-width:500px;
+            width:100%;
         }
     </style>
 </head>
@@ -130,81 +154,112 @@
 
     <h1>Expense Tracker</h1>
 
-    <!-- FORM -->
     <form action="/add" method="POST">
         <input name="category" placeholder="Category" required>
-        <input name="amount" placeholder="Amount" required>
+
+        <input name="amount" type="number" placeholder="Amount" required>
+
         <input name="date" type="date" required>
+
         <input name="note" placeholder="Note">
+
         <button type="submit">Add Expense</button>
     </form>
 
-    <h2>Total: ₹{{ total }}</h2>
-
-    <!-- SEARCH -->
-    <input type="text" id="search" placeholder="Search expenses..." onkeyup="filterExpenses()">
-
-    <!-- EXPENSE LIST -->
-    <div class="expense-container">
-        {% for exp in expenses %}
-        <div class="expense">
-            <b>{{ exp.Category }}</b>
-            <p>₹{{ exp.Amount }}</p>
-            <p>{{ exp.Date }}</p>
-            <p>{{ exp.Note }}</p>
-            <a href="/delete/{{ exp.ID }}">Delete</a>
-        </div>
-        {% endfor %}
+    <div class="top-links">
+        <a href="/">🏠 Home</a>
+        <a href="/insights">📊 Insights</a>
     </div>
 
-    <!-- CHART -->
+    <h2>Total: ₹{{ total }}</h2>
+
+    <input type="text"
+           id="search"
+           placeholder="Search expenses..."
+           onkeyup="filterExpenses()">
+
+    <div class="expense-container">
+
+        {% for exp in expenses %}
+        <div class="expense">
+
+            <b>{{ exp.category }}</b>
+
+            <p>₹{{ exp.amount }}</p>
+
+            <p>{{ exp.date }}</p>
+
+            <p>{{ exp.note }}</p>
+
+            <a href="/delete/{{ exp.id }}">Delete</a>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
     <canvas id="myChart"></canvas>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
+
         let categories = {};
 
         {% for exp in expenses %}
-        categories["{{ exp.Category | escape }}"] =
-        (categories["{{ exp.Category | escape }}"] || 0) + {{ exp.Amount }};
+
+        categories["{{ exp.category | escape }}"] =
+        (categories["{{ exp.category | escape }}"] || 0)
+        + Number("{{ exp.amount }}");
+
         {% endfor %}
 
         const labels = Object.keys(categories);
         const data = Object.values(categories);
 
-        if (labels.length > 0) {
-            new Chart(document.getElementById("myChart"), {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: data
+        if(labels.length > 0){
+
+            new Chart(document.getElementById("myChart"),{
+
+                type:'pie',
+
+                data:{
+                    labels:labels,
+                    datasets:[{
+                        data:data
                     }]
                 },
-                options: {
-                    responsive: true
+
+                options:{
+                    responsive:true
                 }
+
             });
         }
-    </script>
 
-    <!-- SEARCH FUNCTION -->
-    <script>
-        function filterExpenses() {
-            let input = document.getElementById("search").value.toLowerCase();
-            let cards = document.getElementsByClassName("expense");
+        function filterExpenses(){
 
-            for (let i = 0; i < cards.length; i++) {
-                let text = cards[i].innerText.toLowerCase();
+            let input =
+            document.getElementById("search")
+            .value
+            .toLowerCase();
 
-                if (text.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
+            let cards =
+            document.getElementsByClassName("expense");
+
+            for(let i=0;i<cards.length;i++){
+
+                let text =
+                cards[i].innerText.toLowerCase();
+
+                if(text.includes(input)){
+                    cards[i].style.display="";
+                }
+
+                else{
+                    cards[i].style.display="none";
                 }
             }
         }
+
     </script>
 
 </body>
