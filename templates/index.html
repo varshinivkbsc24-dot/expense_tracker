@@ -157,7 +157,7 @@
     </form>
 
     <h2>Total: ₹{{ total }}</h2>
-
+    <input type="text" id="search" placeholder="Search expenses..." onkeyup="filterExpenses()"> 
     <div class="expense-container">
         {% for exp in expenses %}
         <div class="expense">
@@ -200,6 +200,22 @@
             }
         });
     </script>
+    <script>
+    function filterExpenses() {
+    let input = document.getElementById("search").value.toLowerCase();
+    let cards = document.getElementsByClassName("expense");
+
+    for (let i = 0; i < cards.length; i++) {
+        let text = cards[i].innerText.toLowerCase();
+
+        if (text.includes(input)) {
+            cards[i].style.display = "";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+</script>
 
 </body>
 </html>
