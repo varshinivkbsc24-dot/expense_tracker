@@ -180,8 +180,8 @@
         let categories = {};
 
         {% for exp in expenses %}
-            categories["{{ exp.Category }}"] =
-            (categories["{{ exp.Category }}"] || 0) + {{ exp.Amount }};
+         categories["{{ exp.Category }}"] =
+         (categories["{{ exp.Category }}"] || 0) + {{ exp.Amount }};
         {% endfor %}
 
         let labels = Object.keys(categories);
