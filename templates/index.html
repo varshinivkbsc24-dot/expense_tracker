@@ -82,8 +82,13 @@
         }
 
         h2 {
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             font-weight: 500;
+        }
+
+        #search {
+            margin-bottom: 20px;
+            max-width: 400px;
         }
 
         .expense-container {
@@ -110,29 +115,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
-        .expense b {
-            font-size: 20px;
-        }
-
-        .expense p {
-            margin-top: 8px;
-            color: #d1d5db;
-        }
-
-        a {
-            display: inline-block;
-            margin-top: 15px;
-            color: #ff6b6b;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-
-        a:hover {
-            color: #ff3b3b;
-            transform: scale(1.05);
-        }
-
         canvas {
             margin-top: 40px;
             background: white;
@@ -148,6 +130,7 @@
 
     <h1>Expense Tracker</h1>
 
+    <!-- FORM -->
     <form action="/add" method="POST">
         <input name="category" placeholder="Category" required>
         <input name="amount" placeholder="Amount" required>
@@ -157,21 +140,24 @@
     </form>
 
     <h2>Total: ₹{{ total }}</h2>
-    <input type="text" id="search" placeholder="Search expenses..." onkeyup="filterExpenses()"> 
+
+    <!-- SEARCH -->
+    <input type="text" id="search" placeholder="Search expenses..." onkeyup="filterExpenses()">
+
+    <!-- EXPENSE LIST -->
     <div class="expense-container">
         {% for exp in expenses %}
         <div class="expense">
             <b>{{ exp.Category }}</b>
-
             <p>₹{{ exp.Amount }}</p>
             <p>{{ exp.Date }}</p>
             <p>{{ exp.Note }}</p>
-
             <a href="/delete/{{ exp.ID }}">Delete</a>
         </div>
         {% endfor %}
     </div>
 
+    <!-- CHART -->
     <canvas id="myChart"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -180,42 +166,46 @@
         let categories = {};
 
         {% for exp in expenses %}
-         categories["{{ exp.Category }}"] =
-         (categories["{{ exp.Category }}"] || 0) + {{ exp.Amount }};
+        categories["{{ exp.Category | escape }}"] =
+        (categories["{{ exp.Category | escape }}"] || 0) + {{ exp.Amount }};
         {% endfor %}
 
-        let labels = Object.keys(categories);
-        let data = Object.values(categories);
+        const labels = Object.keys(categories);
+        const data = Object.values(categories);
 
-        new Chart(document.getElementById("myChart"), {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    </script>
-    <script>
-    function filterExpenses() {
-    let input = document.getElementById("search").value.toLowerCase();
-    let cards = document.getElementsByClassName("expense");
-
-    for (let i = 0; i < cards.length; i++) {
-        let text = cards[i].innerText.toLowerCase();
-
-        if (text.includes(input)) {
-            cards[i].style.display = "";
-        } else {
-            cards[i].style.display = "none";
+        if (labels.length > 0) {
+            new Chart(document.getElementById("myChart"), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
         }
-    }
-}
-</script>
+    </script>
+
+    <!-- SEARCH FUNCTION -->
+    <script>
+        function filterExpenses() {
+            let input = document.getElementById("search").value.toLowerCase();
+            let cards = document.getElementsByClassName("expense");
+
+            for (let i = 0; i < cards.length; i++) {
+                let text = cards[i].innerText.toLowerCase();
+
+                if (text.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
